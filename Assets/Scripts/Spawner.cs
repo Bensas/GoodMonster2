@@ -13,27 +13,27 @@ public class Spawner : MonoBehaviour {
     private const int MONSTERS_TILL_LEVEL_UP = 10;
     private const double DECREASE_IN_SPAWN_TIME = 0.95;
     private const int SPAWN_POINTS = 3;
+    public static readonly Vector3 OUT_OF_MAP_POSITION = new Vector3(20, -25);
     private double spawnTime = STARTING_SPAWN_TIME;
     private int monstersOnScreen = 0;
     private int timeSinceLastSpawn = 0;
     private int monstersSpawned = 0;
-    private LinkedList<Monster> monsters = new LinkedList<Monster>();
-    private static Vector2[] spawnPoints = { new Vector2(-10.86f, -9.94f), new Vector2(26.79f, -4.1f), new Vector2(0, 0) };
+    private static readonly Vector2[] spawnPoints = { new Vector2(-10.86f, -9.94f), new Vector2(26.79f, -4.1f), new Vector2(-19.5f, 9.6f) };
     public Monster original;
 
     void Start()
     {
-        generateMonsters();
+        GenerateMonsters();
     }
 
     void Update()
     {
         if (monstersOnScreen < MAX_MONSTERS_ON_SCREEN && timeSinceLastSpawn > STARTING_SPAWN_TIME)
         {
-            Monster newSpawn = getInactiveMonster();
+            Monster newSpawn = GetInactiveMonster();
             if (newSpawn != null)
             {
-                newSpawn.spawn();
+                newSpawn.Spawn();
                 timeSinceLastSpawn = 0;
                 monstersSpawned++;
             }
@@ -44,9 +44,9 @@ public class Spawner : MonoBehaviour {
             spawnTime *= DECREASE_IN_SPAWN_TIME;
     }
 
-    private Monster getInactiveMonster()
+    private Monster GetInactiveMonster()
     {
-        foreach (Monster m in monsters)
+        foreach (Monster m in Monsters)
         {
             if (m.State == Monster.STATE.INACTIVE)
                 return m;
@@ -54,15 +54,18 @@ public class Spawner : MonoBehaviour {
         return null;
     }
 
-    private void generateMonsters()
+    private void GenerateMonsters()
     {
+        Monsters = new List<Monster>();
         for (int i = 0; i < MONSTERS; i++)
-            monsters.AddFirst(Instantiate(original, new Vector3(20,-25), Quaternion.identity));
+            Monsters.Add(Instantiate(original, OUT_OF_MAP_POSITION, Quaternion.identity));
     }
 
-    public static Vector2 getRandomSpawnPoint()
+    public static Vector2 GetRandomSpawnPoint()
     {
         System.Random random = new System.Random();
         return spawnPoints[random.Next(3)];
     }
+
+    public List<Monster> Monsters { get; private set; }
 }
