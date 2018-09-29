@@ -17,17 +17,6 @@ public class Arm : MonoBehaviour {
 	void Update () {
         lineRenderer.SetPosition(0, source.transform.position);
         lineRenderer.SetPosition(1, destination.transform.position);
-        //Debug.Log(-Vector2.SignedAngle((Vector2)pivot.transform.position, myCam.ScreenToWorldPoint(Input.mousePosition)));
-        //float rotation = Vector2.SignedAngle((Vector2)pivot.transform.position, myCam.ScreenToWorldPoint(Input.mousePosition));
-        //float rotation = 
-
-        //var mouseRay = myCam.ScreenPointToRay(Input.mousePosition);
-        //RaycastHit raycastInfo;
-        //if (Physics.Raycast(mouseRay, out raycastInfo, float.MaxValue, collisionLayer)){
-        //    pivot.transform.LookAt(raycastInfo.point);
-        //    pivot.transform.eulerAngles = new Vector3(0, 0, pivot.transform.eulerAngles.z);
-        //}
-        //transform.localScale = new Vector3(1, Vector2.Distance((Vector2)pivot.transform.position, myCam.ScreenToWorldPoint(Input.mousePosition)), 1);
 
     }
 }
