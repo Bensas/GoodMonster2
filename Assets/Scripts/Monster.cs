@@ -8,12 +8,11 @@ public class Monster : MonoBehaviour {
     public GameObject bed;
 
     public enum STATE { ACTIVE, INACTIVE };
-    STATE state = STATE.INACTIVE;
 
 	void Start ()
     {
-		
-	}
+        State = STATE.INACTIVE;
+    }
 	
 	void Update ()
     {

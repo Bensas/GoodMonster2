@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour {
     private const int MONSTERS_TILL_LEVEL_UP = 10;
     private const double DECREASE_IN_SPAWN_TIME = 0.95;
     private const int SPAWN_POINTS = 3;
-    private double spawnTime = 301;
+    private double spawnTime = STARTING_SPAWN_TIME;
     private int monstersOnScreen = 0;
     private int timeSinceLastSpawn = 0;
     private int monstersSpawned = 0;
@@ -33,7 +33,6 @@ public class Spawner : MonoBehaviour {
             Monster newSpawn = getInactiveMonster();
             if (newSpawn != null)
             {
-                Debug.Log("spawned");
                 newSpawn.spawn();
                 timeSinceLastSpawn = 0;
                 monstersSpawned++;
