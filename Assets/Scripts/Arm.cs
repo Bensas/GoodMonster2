@@ -28,6 +28,5 @@ public class Arm : MonoBehaviour {
         //    pivot.transform.eulerAngles = new Vector3(0, 0, pivot.transform.eulerAngles.z);
         //}
         //transform.localScale = new Vector3(1, Vector2.Distance((Vector2)pivot.transform.position, myCam.ScreenToWorldPoint(Input.mousePosition)), 1);
-
     }
 }
