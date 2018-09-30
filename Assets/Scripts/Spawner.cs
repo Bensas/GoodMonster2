@@ -13,6 +13,9 @@ public class Spawner : MonoBehaviour {
     private const int MONSTERS_TILL_LEVEL_UP = 1;
     private const double DECREASE_IN_SPAWN_TIME = 0.5;
     private const int SPAWN_POINTS = 3;
+    private int difficulty = 1;
+    private const int DIFFICULTY_INCREASE = 1;
+    private const int MAX_DIFFICULTY = 5;
     public static readonly Vector3 OUT_OF_MAP_POSITION = new Vector3(20, -25);
     private double spawnTime = STARTING_SPAWN_TIME;
     private int monstersOnScreen = 0;
@@ -28,12 +31,13 @@ public class Spawner : MonoBehaviour {
 
     void Update()
     {
-        if (Monster.MonstersOnScreen < MAX_MONSTERS_ON_SCREEN && timeSinceLastSpawn > STARTING_SPAWN_TIME)
+        if (Monster.MonstersOnScreen < MAX_MONSTERS_ON_SCREEN && timeSinceLastSpawn > spawnTime)
         {
             Monster newSpawn = GetInactiveMonster();
             if (newSpawn != null)
             {
                 newSpawn.Spawn(GetRandomSpawnPoint());
+                newSpawn.Type = getEnemyType();
                 timeSinceLastSpawn = 0;
                 monstersSpawned++;
             }
@@ -41,7 +45,10 @@ public class Spawner : MonoBehaviour {
         else
             timeSinceLastSpawn++;
         if (monstersSpawned % MONSTERS_TILL_LEVEL_UP == 0)
+        {
             spawnTime *= DECREASE_IN_SPAWN_TIME;
+            difficulty += DIFFICULTY_INCREASE;
+        }
     }
 
     private Monster GetInactiveMonster()
@@ -65,6 +72,23 @@ public class Spawner : MonoBehaviour {
     {
         System.Random random = new System.Random();
         return spawnPoints[random.Next(3)];
+    }
+
+    private Monster.TYPE getEnemyType()
+    {
+        int chance = new System.Random().Next(15);
+        int fiftyFifty = new System.Random().Next(1);
+        if(chance > difficulty && chance < difficulty*2)
+        {
+            if (fiftyFifty == 1)
+                return Monster.TYPE.FAST;
+            else
+                return Monster.TYPE.HEALTHY;
+        }
+        if (chance > difficulty * 2)
+            return Monster.TYPE.FASTHEALTHY;
+        else
+            return Monster.TYPE.NORMAL;
     }
 
     public List<Monster> Monsters { get; private set; }

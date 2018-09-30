@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,22 +8,24 @@ public class Monster : MonoBehaviour {
     public LayerMask collisionLayer;
     private Vector3 mousePos;
 
-    private const int STARTING_HEALTH = 1;
+    private const int STARTING_HEALTH_NORMAL = 1;
+    private const int STARTING_HEALTH_HEALTHY = 2;
+    private const float SPEED_FACTOR_NORMAL = 1/25;
+    private const float SPEED_FACTOR_FAST = 1/12;
     private const int DROP_DAMAGE = 2;
     private const float DROP_RANGE = 10;
     private Vector3 speed;
-    private float speedFactor;
     public static int MonstersOnScreen = 0;
     public Spawner spawner;
     public GameObject bed;
 
     public enum STATE { ACTIVE, INACTIVE, GRABBED };
+    public enum TYPE { FAST, HEALTHY, FASTHEALTHY, NORMAL};
 
     void Start()
     {
-        Health = STARTING_HEALTH;
+        Health = GetStartingHealth();
         State = STATE.INACTIVE;
-        speedFactor = 1f/(new System.Random().Next(12,25));
         myCam = Camera.main;
     }
 
@@ -31,7 +34,7 @@ public class Monster : MonoBehaviour {
         switch (State)
         {
             case STATE.ACTIVE:
-                Vector3 finalSpeed = new Vector3(speed.x * speedFactor, speed.y * speedFactor, speed.z * speedFactor);
+                Vector3 finalSpeed = new Vector3(speed.x * GetSpeedFactor(), speed.y * GetSpeedFactor(), speed.z * GetSpeedFactor());
                 transform.position += finalSpeed;
                 break;
             case STATE.GRABBED:
@@ -89,6 +92,33 @@ public class Monster : MonoBehaviour {
         return false;
     }
 
+    private int GetStartingHealth()
+    {
+        switch (Type)
+        {
+            case TYPE.HEALTHY:
+                return STARTING_HEALTH_HEALTHY;
+            case TYPE.FASTHEALTHY:
+                return STARTING_HEALTH_HEALTHY;
+            default:
+                return STARTING_HEALTH_NORMAL;
+        }
+    }
+
+    private float GetSpeedFactor()
+    {
+        switch (Type)
+        {
+            case TYPE.FAST:
+                return SPEED_FACTOR_FAST;
+            case TYPE.FASTHEALTHY:
+                return SPEED_FACTOR_FAST;
+            default:
+                return SPEED_FACTOR_NORMAL;
+        }
+    }
+
     public STATE State { get; set; }
+    public TYPE Type { get; set; }
     public int Health { get; private set; }
 }
