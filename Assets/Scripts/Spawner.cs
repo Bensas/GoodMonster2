@@ -10,8 +10,8 @@ public class Spawner : MonoBehaviour {
     private const int MONSTERS = 20;
     private const int MINIMUM_SPAWN_TIME = 1 * FRAMES_PER_SECOND;
     private const int STARTING_SPAWN_TIME = 5 * FRAMES_PER_SECOND;
-    private const int MONSTERS_TILL_LEVEL_UP = 1;
-    private const double DECREASE_IN_SPAWN_TIME = 0.5;
+    private const int MONSTERS_TILL_LEVEL_UP = 10;
+    private const double DECREASE_IN_SPAWN_TIME = 0.95;
     private const int SPAWN_POINTS = 3;
     private int difficulty = 1;
     private const int DIFFICULTY_INCREASE = 1;
@@ -38,6 +38,7 @@ public class Spawner : MonoBehaviour {
             {
                 newSpawn.Spawn(GetRandomSpawnPoint());
                 newSpawn.Type = getEnemyType();
+                SetEnemyAnimation(newSpawn);
                 timeSinceLastSpawn = 0;
                 monstersSpawned++;
             }
@@ -89,6 +90,25 @@ public class Spawner : MonoBehaviour {
             return Monster.TYPE.FASTHEALTHY;
         else
             return Monster.TYPE.NORMAL;
+    }
+
+    private void SetEnemyAnimation(Monster enemy){
+        switch (enemy.Type)
+        {
+            case Monster.TYPE.NORMAL:
+                enemy.GetComponent<Animator>().SetTrigger("Normal");
+                break;
+            case Monster.TYPE.FAST:
+                enemy.GetComponent<Animator>().SetTrigger("Fast");
+                break;
+            case Monster.TYPE.HEALTHY:
+                enemy.GetComponent<Animator>().SetTrigger("Healthy");
+                break;
+            case Monster.TYPE.FASTHEALTHY:
+                enemy.GetComponent<Animator>().SetTrigger("FastHealthy");
+                break;
+        }
+
     }
 
     public List<Monster> Monsters { get; private set; }

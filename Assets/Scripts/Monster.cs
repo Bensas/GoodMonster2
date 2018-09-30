@@ -10,8 +10,8 @@ public class Monster : MonoBehaviour {
 
     private const int STARTING_HEALTH_NORMAL = 1;
     private const int STARTING_HEALTH_HEALTHY = 2;
-    private const float SPEED_FACTOR_NORMAL = 1/25;
-    private const float SPEED_FACTOR_FAST = 1/12;
+    private const float SPEED_FACTOR_NORMAL = 1f/25;
+    private const float SPEED_FACTOR_FAST = 1f/12;
     private const int DROP_DAMAGE = 2;
     private const float DROP_RANGE = 10;
     private Vector3 speed;

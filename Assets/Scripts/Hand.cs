@@ -20,6 +20,8 @@ public class Hand : MonoBehaviour {
     public Vector3 speed = new Vector3(0, 0, 0);
     public float speedFactor = 0.5f;
 
+    public GameObject pivot;
+
     private void Start()
     {
         myCam = Camera.main;
@@ -34,7 +36,8 @@ public class Hand : MonoBehaviour {
         {
             mousePosition = raycastInfo.point;
 
-            //transform.Rotate(Vector3.Angle())
+            transform.rotation = Quaternion.Euler(0, 0, name=="LeftHand"? Vector2.Angle(transform.position, pivot.transform.position) + 10f :
+                                                 -Vector2.Angle(transform.position, pivot.transform.position) - 10f);
 
             switch (state)
             {
@@ -64,7 +67,7 @@ public class Hand : MonoBehaviour {
 
                 case STATE.MIDDLE:
                     transform.position = mousePosition;
-                    transform.Translate(0, 0.5f, 0);
+                    transform.Translate(name=="LeftHand"?0.5f: -0.5f, 0, 0);
                     break;
 
                 case STATE.REACHING_SIDE:
