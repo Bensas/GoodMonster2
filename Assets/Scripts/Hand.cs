@@ -27,7 +27,6 @@ public class Hand : MonoBehaviour {
         myCam = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
         var mouseRay = myCam.ScreenPointToRay(Input.mousePosition);
@@ -56,7 +55,6 @@ public class Hand : MonoBehaviour {
                 case STATE.REACHING_MIDDLE:
                     speed = speedFactor * Vector3.Normalize(new Vector3(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y, 0));
                     transform.position += speed;
-                    Debug.Log(transform.position);
 
                     if (Vector3.Distance(mousePosition, transform.position) < 1f)
                     {
@@ -73,7 +71,6 @@ public class Hand : MonoBehaviour {
                 case STATE.REACHING_SIDE:
                     speed = speedFactor * Vector3.Normalize(new Vector3(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y, 0));
                     transform.position += speed;
-                    Debug.Log(transform.position);
                     if (Vector3.Distance(mousePosition, transform.position) < 1f)
                     {
                         state = STATE.SIDE;
