@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hand : MonoBehaviour {
+
+    public static const DEFAULT_HAND_DAMAGE = 1;
     private Camera myCam;
     public LayerMask collisionLayer;
 

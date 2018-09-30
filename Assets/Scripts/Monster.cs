@@ -15,7 +15,6 @@ public class Monster : MonoBehaviour {
     public static int MonstersOnScreen = 0;
     public Spawner spawner;
     public GameObject bed;
-    public GameObject hand;
 
     public enum STATE { ACTIVE, INACTIVE, GRABBED };
 
@@ -29,19 +28,18 @@ public class Monster : MonoBehaviour {
 
     void Update()
     {
-        var mouseRay = myCam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit raycastInfo;
-        if (Physics.Raycast(mouseRay, out raycastInfo, float.MaxValue, collisionLayer))
-            mousePos = raycastInfo.point;
-
-        if (State == STATE.ACTIVE)
+        switch (State)
         {
-            Vector3 finalSpeed = new Vector3(speed.x * speedFactor, speed.y * speedFactor, speed.z * speedFactor);
-            transform.position += finalSpeed;
-        }
-        else if(State == STATE.GRABBED)
-        {
-            transform.position = mousePos;
+            case STATE.ACTIVE:
+                Vector3 finalSpeed = new Vector3(speed.x * speedFactor, speed.y * speedFactor, speed.z * speedFactor);
+                transform.position += finalSpeed;
+                break;
+            case STATE.GRABBED:
+                var mouseRay = myCam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit raycastInfo;
+                if(Physics.Raycast(mouseRay, out raycastInfo, float.MaxValue, collisionLayer))
+                    transform.position = raycastInfo.point;
+                break;  
         }
     }
 
