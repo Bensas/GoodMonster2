@@ -33,6 +33,8 @@ public class Hand : MonoBehaviour {
         {
             mousePosition = raycastInfo.point;
 
+            //transform.Rotate(Vector3.Angle())
+
             switch (state)
             {
                 case STATE.INACTIVE:
@@ -60,7 +62,7 @@ public class Hand : MonoBehaviour {
 
                 case STATE.MIDDLE:
                     transform.position = mousePosition;
-                    transform.Translate(name == "LeftHand" ? -0.5f : 0.5f, 0, 0);
+                    transform.Translate(0, 0.5f, 0);
                     break;
 
                 case STATE.REACHING_SIDE:
