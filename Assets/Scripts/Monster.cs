@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster : MonoBehaviour {
+    private Camera myCam;
+    public LayerMask collisionLayer;
+    private Vector3 mousePos;
 
     private const int STARTING_HEALTH = 1;
     private const int DROP_DAMAGE = 2;
@@ -12,7 +15,7 @@ public class Monster : MonoBehaviour {
     public static int MonstersOnScreen = 0;
     public Spawner spawner;
     public GameObject bed;
-    public GameObject arm;
+    public GameObject hand;
 
     public enum STATE { ACTIVE, INACTIVE, GRABBED };
 
@@ -21,10 +24,16 @@ public class Monster : MonoBehaviour {
         Health = STARTING_HEALTH;
         State = STATE.INACTIVE;
         speedFactor = 1f/(new System.Random().Next(12,25));
+        myCam = Camera.main;
     }
 
     void Update()
     {
+        var mouseRay = myCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit raycastInfo;
+        if (Physics.Raycast(mouseRay, out raycastInfo, float.MaxValue, collisionLayer))
+            mousePos = raycastInfo.point;
+
         if (State == STATE.ACTIVE)
         {
             Vector3 finalSpeed = new Vector3(speed.x * speedFactor, speed.y * speedFactor, speed.z * speedFactor);
@@ -32,7 +41,7 @@ public class Monster : MonoBehaviour {
         }
         else if(State == STATE.GRABBED)
         {
-            transform.position = arm.transform.position;
+            transform.position = mousePos;
         }
     }
 
