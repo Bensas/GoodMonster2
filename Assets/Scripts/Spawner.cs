@@ -10,15 +10,14 @@ public class Spawner : MonoBehaviour {
     private const int MONSTERS = 20;
     private const int MINIMUM_SPAWN_TIME = 1 * FRAMES_PER_SECOND;
     private const int STARTING_SPAWN_TIME = 5 * FRAMES_PER_SECOND;
-    private const int MONSTERS_TILL_LEVEL_UP = 1;
-    private const double DECREASE_IN_SPAWN_TIME = 0.5;
+    private const int MONSTERS_TILL_LEVEL_UP = 10;
+    private const double DECREASE_IN_SPAWN_TIME = 0.95;
     private const int SPAWN_POINTS = 3;
-    private int difficulty = 1;
+    private static int difficulty = 1;
     private const int DIFFICULTY_INCREASE = 1;
     private const int MAX_DIFFICULTY = 5;
     public static readonly Vector3 OUT_OF_MAP_POSITION = new Vector3(20, -25);
-    private double spawnTime = STARTING_SPAWN_TIME;
-    private int monstersOnScreen = 0;
+    private static double _spawnTime = STARTING_SPAWN_TIME;
     private int timeSinceLastSpawn = 0;
     private int monstersSpawned = 0;
     private static readonly Vector2[] spawnPoints = { new Vector2(-10.86f, -9.94f), new Vector2(26.79f, -4.1f), new Vector2(-19.5f, 9.6f) };
@@ -31,22 +30,22 @@ public class Spawner : MonoBehaviour {
 
     void Update()
     {
-        if (Monster.MonstersOnScreen < MAX_MONSTERS_ON_SCREEN && timeSinceLastSpawn > spawnTime)
+        if (Monster.MonstersOnScreen < MAX_MONSTERS_ON_SCREEN && timeSinceLastSpawn > _spawnTime)
         {
             Monster newSpawn = GetInactiveMonster();
             if (newSpawn != null)
             {
                 newSpawn.Spawn(GetRandomSpawnPoint());
-                newSpawn.Type = getEnemyType();
+                newSpawn.Type = GetEnemyType();
                 timeSinceLastSpawn = 0;
                 monstersSpawned++;
             }
         }
         else
             timeSinceLastSpawn++;
-        if (monstersSpawned % MONSTERS_TILL_LEVEL_UP == 0)
+        if (monstersSpawned % MONSTERS_TILL_LEVEL_UP == 0 && monstersSpawned != 0)
         {
-            spawnTime *= DECREASE_IN_SPAWN_TIME;
+            _spawnTime *= DECREASE_IN_SPAWN_TIME;
             difficulty += DIFFICULTY_INCREASE;
         }
     }
@@ -74,7 +73,7 @@ public class Spawner : MonoBehaviour {
         return spawnPoints[random.Next(3)];
     }
 
-    private Monster.TYPE getEnemyType()
+    private Monster.TYPE GetEnemyType()
     {
         int chance = new System.Random().Next(15);
         int fiftyFifty = new System.Random().Next(1);
@@ -85,7 +84,7 @@ public class Spawner : MonoBehaviour {
             else
                 return Monster.TYPE.HEALTHY;
         }
-        if (chance > difficulty * 2)
+        if (chance < difficulty)
             return Monster.TYPE.FASTHEALTHY;
         else
             return Monster.TYPE.NORMAL;
