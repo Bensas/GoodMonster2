@@ -22,7 +22,7 @@ public class ClickHandler : MonoBehaviour {
                 foreach (Monster monster in spawner.Monsters){
                     if (Vector3.Distance(monster.transform.position, raycastInfo.point) < 1f){
                         gamePanel.AddScore(GamePanel.KILL_SCORE);
-                        monster.Hit(Hand.BASE_HAND_DAMAGE);
+                        monster.Hit(Hand.DEFAULT_HAND_DAMAGE);
                     }
                 }
                     

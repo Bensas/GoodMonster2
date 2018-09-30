@@ -20,14 +20,14 @@ public class Hands : MonoBehaviour {
         var mouseRay = myCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit raycastInfo;
         if (Physics.Raycast(mouseRay, out raycastInfo, float.MaxValue, collisionLayer)){
-            if (raycastInfo.point.x > -1.6 && raycastInfo.point.x < 1.6f && rightHand.state != Hand.STATE.REACHING_MIDDLE && rightHand.state != Hand.STATE.MIDDLE)
+            if (raycastInfo.point.x > -2f && raycastInfo.point.x < 1.5f && rightHand.state != Hand.STATE.REACHING_MIDDLE && rightHand.state != Hand.STATE.MIDDLE)
             {
                 rightHand.state = Hand.STATE.REACHING_MIDDLE;
                 rightHand.SetSpeed();
                 leftHand.state = Hand.STATE.REACHING_MIDDLE;
                 leftHand.SetSpeed();
             }
-            else if (raycastInfo.point.x < -1.6f && leftHand.state != Hand.STATE.REACHING_SIDE && leftHand.state != Hand.STATE.SIDE)
+            else if (raycastInfo.point.x < -2f && leftHand.state != Hand.STATE.REACHING_SIDE && leftHand.state != Hand.STATE.SIDE)
             {
                 rightHand.state = Hand.STATE.RETREATING;
                 rightHand.SetSpeed();
@@ -35,7 +35,7 @@ public class Hands : MonoBehaviour {
                 leftHand.SetSpeed();
 
             }
-            else if (raycastInfo.point.x > 1.6f && rightHand.state != Hand.STATE.REACHING_SIDE && rightHand.state != Hand.STATE.SIDE)
+            else if (raycastInfo.point.x > 1.5f && rightHand.state != Hand.STATE.REACHING_SIDE && rightHand.state != Hand.STATE.SIDE)
             {
                 rightHand.state = Hand.STATE.REACHING_SIDE;
                 rightHand.SetSpeed();
