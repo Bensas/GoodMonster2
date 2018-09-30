@@ -20,7 +20,7 @@ public class ClickHandler : MonoBehaviour {
             RaycastHit raycastInfo;
             if (Physics.Raycast(mouseRay, out raycastInfo, float.MaxValue, collisionLayer)){
                 foreach (Monster monster in spawner.Monsters){
-                    if (Vector3.Distance(monster.transform.position, raycastInfo.point) < 1){
+                    if (Vector3.Distance(monster.transform.position, raycastInfo.point) < 1f){
                         gamePanel.AddScore(GamePanel.KILL_SCORE);
                         monster.Kill();
                     }

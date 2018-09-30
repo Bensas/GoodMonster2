@@ -9,8 +9,11 @@ public class Hand : MonoBehaviour {
     public enum STATE{INACTIVE, RETREATING, REACHING_MIDDLE, MIDDLE, REACHING_SIDE, SIDE}
     public STATE state;
 
+    private const float GRABBING_RANGE = 1f;
+
     public GameObject bed;
     private Vector3 mousePosition;
+    public Spawner spawner;
 
     public Vector3 speed = new Vector3(0, 0, 0);
     public float speedFactor = 0.5f;
@@ -57,7 +60,7 @@ public class Hand : MonoBehaviour {
 
                 case STATE.MIDDLE:
                     transform.position = mousePosition;
-                    transform.Translate(name == "leftHand" ? 0.4f : -0.4f, 0, 0);
+                    transform.Translate(name == "LeftHand" ? -0.5f : 0.5f, 0, 0);
                     break;
 
                 case STATE.REACHING_SIDE:
@@ -69,12 +72,26 @@ public class Hand : MonoBehaviour {
                         state = STATE.SIDE;
                     }
                     break;
+
                 case STATE.SIDE:
                     transform.position = mousePosition;
                     break;
             }
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            foreach (Monster m in spawner.Monsters)
+            {
+                if (Vector3.Distance(m.transform.position, transform.position) < GRABBING_RANGE)
+                {
+                    m.State = Monster.STATE.GRABBED;
+                    break;
+                }
+            }
+        }
     }
+
+
 
     public void SetSpeed(){
         switch (state)
@@ -83,7 +100,7 @@ public class Hand : MonoBehaviour {
                 break;
 
             case STATE.RETREATING:
-                speed = speedFactor * Vector3.Normalize(new Vector3(transform.position.x - bed.transform.position.x, transform.position.y - bed.transform.position.y, 0));
+                speed = speedFactor * Vector3.Normalize(new Vector3(bed.transform.position.x - transform.position.x, bed.transform.position.y - transform.position.y, 0));
                 break;
 
             case STATE.REACHING_MIDDLE:
@@ -92,7 +109,6 @@ public class Hand : MonoBehaviour {
 
             case STATE.REACHING_SIDE:
                 speed = speedFactor * Vector3.Normalize(new Vector3(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y, 0));
-
                 break;
         }
     }
